@@ -1,15 +1,14 @@
-//Configuração do banco de dados
+require('dotenv').config();
 
 module.exports = {
     dialect: 'postgres',
-    host: 'localhost',
-    username: 'postgres',
-    password: '',
-    database:'sqlnode',
+    host: process.env.DATABASE_HOST,    
+    port: process.env.DATABASE_PORT,
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
     define: {
-        timestamps: true,//vai automaticamente entender que toda tabela no banco poussui um campo,
-        // created_at, que armazena a data de criação do registro e
-        // updated_at que armazena a última atualização do registro na base.
-        underscored: true,//define o nome das tabelas e o nomes das colunas no formato snake_case
+        timestamps: true,
+        underscored: true,
     },
 };

@@ -1,19 +1,24 @@
 module.exports = {
-  //Método up serve para dizer o que essa migration vai realizar na base de dados.
+
   async up (queryInterface, Sequelize) {
   
     await queryInterface.createTable('users', { 
       id: {
-        type: Sequelize.INTEGER,//campo numérico.
-        primaryKey: true,//campo de chave primária.
+        type: Sequelize.INTEGER,
+        primaryKey: true,
         autoIncrement: true,
-        allowNull: false,//campo não pode ser nulo.
+        allowNull: false,
       },
       name: {
-        type: Sequelize.STRING,//campo letras
+        type: Sequelize.STRING,
         allowNull:false,
       },
       email: {
+        type: Sequelize.STRING,
+        allowNull:false,
+        unique: true,
+      },
+      password_hash: {
         type: Sequelize.STRING,
         allowNull:false,
       },
@@ -28,7 +33,6 @@ module.exports = {
     });
   },
 
-  //No método down sua função será deletar a tabela caso seja necessário.
   async down (queryInterface, Sequelize) {
     await queryInterface.dropTable('users');
   }

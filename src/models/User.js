@@ -1,20 +1,63 @@
-//Esse model é escrito em formato de class
-const { Model, DataTypes } = require('sequelize');//importando o Model e DataTypes de dentro do sequelize. //7
+const { Model, DataTypes } = require("sequelize");
+const bcryptjs = require("bcryptjs");
+class User extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        name: {
+          type: DataTypes.STRING,
+          defaultValue: "",
+          validate: {
+            len: {
+              args: [3, 255],
+              msg: "Name field must be between 3 and 255 characters",
+            },
+          },
+        },
+        email: {
+          type: DataTypes.STRING,
+          defaultValue: "",
+          unique: {
+            msg: "Email already exists",
+          },
+          validate: {
+            isEmail: {
+              msg: "Invalid email",
+            },
+          },
+        },
+        password_hash: {
+          type: DataTypes.STRING,
+          defaultValue: "",
+        },
+        password: {
+          type: DataTypes.VIRTUAL,
+          defaultValue: "",
+          validate: {
+            len: {
+              args: [5, 10],
+              msg: "Password must be between 5 and 10 characters",
+            },
+          },
+        },
+      },
+      {
+        sequelize,
+      }
+    );
+    this.addHook("beforeSave", async (user) => {
+      if (user.password) {
+        user.password_hash = await bcryptjs.hash(user.password, 8);
+      }
+    });
+  }
+  passwordIsValid(password) {
+    return bcryptjs.compare(password, this.password_hash);
+  }
 
-class User extends Model {//Criar uma class usuário que extende o Model.  //7
-    static init(sequelize) {//criação do método init, método padrão do sequelize, para configuração do comportamento do Model.  //7
-        super.init({
-            name: DataTypes.STRING, //7
-            email: DataTypes.STRING, //7
-        }, {
-            sequelize //passamos o objeto de configuração de conexão com o banco de dados, que por padrão tem o nome de sequelize. //7
-        })
-    }
-    static associate(models) {//recebe por parametro todos os models da aplicação
-        //tem muitos => endereço     chave estrangeira    como será nomeado
-        this.hasMany(models.Address, { foreignKey: 'user_id', as: 'addresses' });
-        this.belongsToMany(models.Tech, { foreignKey: 'user_id', through: 'user_techs', as: 'techs' })
-    }
+  static associate(models) {
+    this.hasMany(models.Car, { foreignKey: 'user_id', as: 'cars' });
+  }
 }
 
-module.exports = User; //7
+module.exports = User;
