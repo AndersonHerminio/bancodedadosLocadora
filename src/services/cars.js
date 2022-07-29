@@ -2,30 +2,30 @@
 const Cars = require('../models/Cars');
 
 module.exports = {
-    index(filter) {
+    index(data) {
         return Cars.findAll({
             attributes: ['model', 'chassi', 'year'],
-            where: filter
+            where: data
         });
     },
     store(data) {
         return Cars.create(data);
     },
-    show(carFilter) {
-        const filter = {
-            id: carFilter.car_id
+    show(carData) {
+        const data = {
+            id: carData.car_id
         };
 
-        return Cars.findOne({ where: filter });
+        return Cars.findOne({ where: data });
     },
     update({ data, filter }) {
         return Cars.update(data, {
             where: filter
         });
     },
-    delete(filter) {
+    delete(data) {
         return Cars.destroy({
-            where: filter
+            where: data
         });
     }
 };

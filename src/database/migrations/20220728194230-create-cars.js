@@ -24,7 +24,7 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'users', key: 'id' },
+        references: { model: 'users', key: 'id' },// referencia outra tabela 'users' e o campo 'id'
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },

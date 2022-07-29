@@ -3,11 +3,11 @@ const CarsService = require('../services/cars');
 module.exports = {
     async index(req, res) {
         try {
-            const filter = {
+            const data = {
                 user_id: req.params.user_id,
             }
 
-            const cars = await CarsService.index(filter);
+            const cars = await CarsService.index(data);
     
             return res.json(cars);
                        
@@ -38,11 +38,11 @@ module.exports = {
 
     async show(req, res) {
         try {
-            const filter = {
+            const data = {
                 car_id: req.params.car_id
             };
 
-            const car = await CarsService.show(filter);
+            const car = await CarsService.show(data);
     
             return res.json(car);
         } catch(e) {
@@ -54,18 +54,18 @@ module.exports = {
         try {
             if(!req.params.car_id) {
                 return res.status(400).json({
-                    errors: ['ID do carro não enviado.']
+                    errors: ['Car ID not sent.']
                 })
             }
 
-            const options = {
+            const data = {
                 data: req.body,
                 filter: {
                     id: req.params.car_id
                 }
             };
 
-            const updatedCar = await CarsService.update(options);
+            const updatedCar = await CarsService.update(data);
 
             return res.json(updatedCar);
         } catch(e) {
@@ -77,17 +77,17 @@ module.exports = {
         try {
             if(!req.params.car_id) {
                 return res.status(400).json({
-                    errors: ['ID do carro não enviado.']
+                    errors: ['Car ID not sent.']
                 })
             }
 
-            const filter = {
+            const data = {
                 id: req.params.car_id
             };
 
-            await CarsService.delete(filter);
+            await CarsService.delete(data);
 
-            return res.json(filter);
+            return res.json(data);
         } catch(e) {
             return res.json(null);
         }
